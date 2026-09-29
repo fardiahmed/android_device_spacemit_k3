@@ -1,0 +1,3 @@
+require board=k3
+require version-bootloader=1.0
+config=bananapi_sm10
