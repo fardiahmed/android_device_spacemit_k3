@@ -1,0 +1,6 @@
+# K3 / BananaPi SM10 sysfs labels (SoC-independent ones: device/spacemit/common/sepolicy/vendor)
+# Storage host controllers (k3.dtsi: ufshc@c0e00000, mmc@d4281000, both directly on the soc bus)
+genfscon sysfs /devices/platform/soc/c0e00000.ufshc                         u:object_r:sysfs_mmc:s0
+genfscon sysfs /devices/platform/soc/d4281000.mmc                           u:object_r:sysfs_mmc:s0
+# GPU (PowerVR BXM-4-64, k3.dtsi gpu@cac00000)
+genfscon sysfs /devices/platform/soc/cac00000.gpu                           u:object_r:sysfs_gpu:s0

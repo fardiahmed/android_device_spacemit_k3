@@ -1,0 +1,35 @@
+#
+# Copyright (C) 2024 The Android Open Source Project
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+# K3 / BananaPi SM10 specific file contexts (shared ones: device/spacemit/common/sepolicy/vendor)
+
+# Boot storage partitions: UFS (k3.dtsi ufshc@c0e00000). Keep in sync with
+# androidboot.boot_devices in BoardConfig.mk and config/fstab/Android.bp.
+/dev/block/platform/soc/c0e00000\.ufshc/by-name/userdata                   u:object_r:userdata_block_device:s0
+/dev/block/platform/soc/c0e00000\.ufshc/by-name/misc                       u:object_r:misc_block_device:s0
+/dev/block/platform/soc/c0e00000\.ufshc/by-name/super                      u:object_r:super_block_device:s0
+/dev/block/platform/soc/c0e00000\.ufshc/by-name/boot(_[ab])?               u:object_r:boot_block_device:s0
+/dev/block/platform/soc/c0e00000\.ufshc/by-name/init_boot(_[ab])?          u:object_r:boot_block_device:s0
+/dev/block/platform/soc/c0e00000\.ufshc/by-name/vendor_boot(_[ab])?        u:object_r:boot_block_device:s0
+/dev/block/platform/soc/c0e00000\.ufshc/by-name/dtbo(_[ab])?               u:object_r:dtbo_block_device:s0
+/dev/block/platform/soc/c0e00000\.ufshc/by-name/vbmeta(_[ab])?             u:object_r:vbmeta_block_device:s0
+/dev/block/platform/soc/c0e00000\.ufshc/by-name/vbmeta_vendor_dlkm(_[ab])? u:object_r:vbmeta_block_device:s0
+/dev/block/platform/soc/c0e00000\.ufshc/by-name/vbmeta_system_dlkm(_[ab])? u:object_r:vbmeta_block_device:s0
+/dev/block/platform/soc/c0e00000\.ufshc/by-name/metadata                   u:object_r:metadata_block_device:s0
+/dev/block/platform/soc/c0e00000\.ufshc/by-name/persist                    u:object_r:persist_block_device:s0
+/dev/block/platform/soc/c0e00000\.ufshc/by-name/frp                        u:object_r:frp_block_device:s0
+
+# Serial console
+/dev/ttyS0                        u:object_r:serial_device:s0
+
+# K3 vendor init scripts
+/vendor/etc/init/hw/init\.k3\.rc  u:object_r:vendor_configs_file:s0
+
+# WiFi device
+/dev/rfkill                       u:object_r:rfkill_device:s0
+
+# DTB
+/vendor/dtb(/.*)?                 u:object_r:vendor_configs_file:s0
