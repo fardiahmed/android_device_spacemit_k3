@@ -19,6 +19,8 @@ SPACEMIT_SENSORS := false
 SPACEMIT_AUTO_ROTATE := false
 # For the BPI-F3 ES8326 built-in mics.
 SPACEMIT_MIC_TEST := false
+# No OP-TEE port (bootloader sources) for the K3 yet.
+SPACEMIT_OPTEE := false
 
 # X100 cores have the H extension: AVF on.
 SPACEMIT_AVF_ENABLED := true
