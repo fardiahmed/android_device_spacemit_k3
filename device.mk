@@ -53,8 +53,12 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.vendor.hwc.use_overlay_planes=true \
     ro.sf.lcd_density=240
 
-# Audio HAL mixer control names: BayLibre's generic list until the SM10 codec is known (a board
-# file replaces it, like device/spacemit/k1/audio/mixer_controls.xml for the F3's ES8326).
+# Audio: no codec on the SM10 carrier; the primary output (the policy's "Speaker") and the HDMI
+# path both play on the DisplayPort card (K3-DP1-Audio, matched by name). USB/BT audio as usual.
+PRODUCT_VENDOR_PROPERTIES += \
+    persist.vendor.audio.primary.card_name=DP1 \
+    persist.vendor.audio.primary.device=0 \
+    persist.vendor.audio.hdmi.card_name=DP1
 PRODUCT_COPY_FILES += \
     hardware/baylibre/audio/mixer_controls.xml:$(TARGET_COPY_OUT_VENDOR)/etc/mixer_controls.xml
 
