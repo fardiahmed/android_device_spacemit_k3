@@ -43,6 +43,27 @@ $(PRODUCT_OUT)/partition_android.json: $(BL_PREBUILT)/partition_android.json
 SPACEMIT_K3_FLASH_FILES += $(PRODUCT_OUT)/partition_android.json
 endif
 
+# BROM boot descriptors and the SPI-NOR layout (bootloader on the module NOR)
+define spacemit-k3-bootinfo
+$(PRODUCT_OUT)/factory/bootinfo_$(1).bin: $(BL_PREBUILT)/factory/bootinfo_$(1).bin
+	mkdir -p $$(dir $$@)
+	cp $$< $$@
+SPACEMIT_K3_FLASH_FILES += $(PRODUCT_OUT)/factory/bootinfo_$(1).bin
+endef
+$(foreach b,spinor spinand block,$(if $(wildcard $(BL_PREBUILT)/factory/bootinfo_$(b).bin),\
+    $(eval $(call spacemit-k3-bootinfo,$(b)))))
+
+ifneq ($(wildcard $(BL_PREBUILT)/partition_nor.json),)
+$(PRODUCT_OUT)/partition_nor.json: $(BL_PREBUILT)/partition_nor.json
+	cp $< $@
+SPACEMIT_K3_FLASH_FILES += $(PRODUCT_OUT)/partition_nor.json
+endif
+
+$(PRODUCT_OUT)/flash_bpi_sm10.sh: device/spacemit/k3/flash_bpi_sm10.sh
+	cp $< $@
+	chmod +x $@
+SPACEMIT_K3_FLASH_FILES += $(PRODUCT_OUT)/flash_bpi_sm10.sh
+
 droidcore: $(SPACEMIT_K3_FLASH_FILES)
 
 endif # u-boot-release.itb exists
