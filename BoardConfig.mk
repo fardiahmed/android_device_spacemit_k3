@@ -48,6 +48,15 @@ BOARD_USERDATAIMAGE_PARTITION_SIZE := 10662837248
 # Wi-Fi / Bluetooth: TODO once the SM10 module's chip is known (see device/spacemit/k1).
 
 # SELinux
+# Wi-Fi: RTL8852BE (rtw89, nl80211), AOSP Wi-Fi HAL without a vendor library
+WPA_SUPPLICANT_VERSION := VER_0_8_X
+BOARD_WPA_SUPPLICANT_DRIVER := NL80211
+BOARD_HOSTAPD_DRIVER := NL80211
+
+# Bluetooth: RTL8852B over USB (btusb)
+BOARD_HAVE_BLUETOOTH := true
+BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/spacemit/k3/bluetooth
+
 BOARD_VENDOR_SEPOLICY_DIRS += device/spacemit/k3/sepolicy/vendor
 
 # Recovery. The K1's librecovery_ui_k1 (Ethernet fastboot UI, power-key-only navigation) is

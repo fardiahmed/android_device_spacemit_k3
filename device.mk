@@ -10,7 +10,7 @@
 # Features the K3/SM10 cannot support (yet), forced off before spacemit-features.mk.
 # No HDMI on the K3 (eDP/DP only).
 SPACEMIT_HDMI_CEC := false
-# Needs Wi-Fi Direct; the SM10 Wi-Fi chip is not identified yet.
+# Needs Wi-Fi Direct: not validated yet on the RTL8852BE (rtw89).
 SPACEMIT_WFD_SINK := false
 # The llama.cpp build targets the K1 IME instructions.
 SPACEMIT_LLM := false
@@ -28,7 +28,7 @@ SPACEMIT_AVF_ENABLED := true
 # Inherit common
 $(call inherit-product, device/spacemit/common/device-common.mk)
 
-# K3 firmware (BXM-4-64 GPU BVNC, VPU, Wi-Fi) from the K3 BSP, once available.
+# K3 firmware: GPU (BXM-4-64), RTL8852BE Wi-Fi and Bluetooth.
 $(call inherit-product-if-exists, vendor/spacemit/k3/k3.mk)
 
 # Platform
@@ -69,8 +69,15 @@ PRODUCT_COPY_FILES += \
     device/spacemit/k3/init.k3.usb.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.k3.usb.rc \
     device/spacemit/k3/ueventd.k3.rc:$(TARGET_COPY_OUT_VENDOR)/etc/ueventd.rc
 
-# Wi-Fi / Bluetooth: TODO once the SM10 module's chip is known (on the K1 this is the Realtek
-# 8852bs HAL in vendor/spacemit/hardware/wifi + supplicant APEX from device/spacemit/k1/wifi).
+# Wi-Fi + Bluetooth: RTL8852BE M.2 module, in-kernel rtw89 (PCIe) and btusb; AOSP Wi-Fi HAL
+# (nl80211, no vendor library) and the HCI-socket Bluetooth HAL.
+PRODUCT_PACKAGES += \
+    com.android.hardware.wifi \
+    com.spacemit.hardware.wpa_supplicant.k3 \
+    android.hardware.bluetooth-service.default
+
+PRODUCT_VENDOR_PROPERTIES += \
+    wifi.interface=wlan0
 
 # Soong namespace of this directory (fstab)
 PRODUCT_SOONG_NAMESPACES += \

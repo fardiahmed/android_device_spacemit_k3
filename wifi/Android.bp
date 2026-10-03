@@ -1,0 +1,35 @@
+// Copyright (C) 2026 The Android Open Source Project
+// SPDX-License-Identifier: Apache-2.0
+
+// RTL8852BE (rtw89): no scan offload, as in BayLibre's K3 Pico-ITX setup
+package {
+    default_applicable_licenses: ["Android-Apache-2.0"],
+}
+
+prebuilt_etc {
+    name: "wpa_supplicant_overlay.conf.k3",
+    src: "wpa_supplicant_overlay.conf",
+    filename: "wpa_supplicant_overlay.conf",
+    relative_install_path: "wifi",
+    installable: false,
+}
+
+prebuilt_etc {
+    name: "p2p_supplicant_overlay.conf.k3",
+    src: "p2p_supplicant_overlay.conf",
+    filename: "p2p_supplicant_overlay.conf",
+    relative_install_path: "wifi",
+    installable: false,
+}
+
+override_apex {
+    name: "com.spacemit.hardware.wpa_supplicant.k3",
+    base: "com.android.hardware.wpa_supplicant",
+    prebuilts: [
+        "com.android.hardware.wpa_supplicant.rc",
+        "com.android.hardware.hostapd.rc",
+        "wpa_supplicant.conf.prebuilt",
+        "wpa_supplicant_overlay.conf.k3",
+        "p2p_supplicant_overlay.conf.k3",
+    ],
+}
