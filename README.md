@@ -41,6 +41,7 @@ is `amvx.ko`; both are built by the shared config).
 | `SPACEMIT_SENSORS`, `SPACEMIT_AUTO_ROTATE` | off | HAL/sepolicy/init follow the F3 header I2C4 wiring |
 | `SPACEMIT_MIC_TEST` | off | F3 ES8326 built-in mics |
 | `SPACEMIT_OPTEE` | off | No OP-TEE port (bootloader sources) for the K3 yet: software KeyMint/Gatekeeper |
+| `SPACEMIT_WM8960_HAT` | off | Default in `device.mk`. On: Waveshare WM8960 Audio HAT is the primary codec (`snd-wm8960`), DP stays the HDMI path; needs the kernel WM8960 codec + DT nodes |
 
 Forced off with `:=` in `device.mk` (before `spacemit-features.mk` is inherited); turn one on
 there once the hardware support exists.
@@ -72,7 +73,10 @@ Base: BayLibre's K3 Pico-ITX BSP (same SoC, sister Banana Pi board), ported to A
    supplicant APEX `com.spacemit.hardware.wpa_supplicant.k3`, HCI-socket Bluetooth HAL. Wi-Fi
    Direct (WfdSink) off until tested.
 8. **Audio**: done, the audio HAL's primary and HDMI cards are the DP card (`DP1`); USB and
-   Bluetooth audio as on the F3.
+   Bluetooth audio as on the F3. For a real speaker/mic path, `SPACEMIT_WM8960_HAT=true`
+   switches the primary card to the Waveshare WM8960 Audio HAT (`audio/` holds its mixer
+   config + a boot-time `tinymix2` routing); the DAI/I2C/clocking still need confirming on
+   the board (see the DT node comment in `k3-bananapi-sm10.dts`).
 
 ## Kernel changes made for the K3 (shared tree)
 

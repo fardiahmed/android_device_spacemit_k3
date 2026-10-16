@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Mixer controls for the Waveshare WM8960 Audio HAT on BPI-SM10 (K3).
+     Maps WM8960 ALSA controls to BayLibre Audio HAL functions. The HAL searches
+     by name in order; first match is used. The DAPM routing (output-mixer and
+     input-boost switches, which default off) is enabled at boot by init.wm8960.rc.
+-->
+<mixerControls>
+    <!-- Master DAC volume (overall output level, 0-255) -->
+    <control function="MASTER_VOLUME" type="int">
+        <name>Playback Volume</name>
+    </control>
+
+    <!-- Hardware volume (per-device: headphone then speaker fallback) -->
+    <control function="HW_VOLUME" type="int">
+        <name>Headphone Playback Volume</name>
+        <name>Speaker Playback Volume</name>
+    </control>
+
+    <!-- Microphone capture mute -->
+    <control function="MIC_SWITCH" type="bool">
+        <name>Capture Switch</name>
+    </control>
+
+    <!-- Microphone gain (input PGA, 0-63) -->
+    <control function="MIC_GAIN" type="int">
+        <name>Capture Volume</name>
+    </control>
+</mixerControls>

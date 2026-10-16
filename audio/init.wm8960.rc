@@ -1,0 +1,12 @@
+# WM8960 Audio HAT: apply the DAPM routing once the sound card is up (the
+# output-mixer and mic-boost switches default off). Runs /vendor/bin/sh so the
+# script needs no exec bit. See wm8960_setup.sh.
+service wm8960_setup /vendor/bin/sh /vendor/etc/wm8960_setup.sh
+    class late_start
+    user root
+    group audio
+    oneshot
+    disabled
+
+on property:sys.boot_completed=1
+    start wm8960_setup

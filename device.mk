@@ -53,14 +53,31 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.vendor.hwc.use_overlay_planes=true \
     ro.sf.lcd_density=240
 
-# Audio: no codec on the SM10 carrier; the primary output (the policy's "Speaker") and the HDMI
-# path both play on the DisplayPort card (K3-DP1-Audio, matched by name). USB/BT audio as usual.
+# Audio. By default the SM10 carrier has no codec, so the primary output (the policy's
+# "Speaker") and the HDMI path both play on the DisplayPort card (matched by name "DP1").
+# With the Waveshare WM8960 Audio HAT attached, set SPACEMIT_WM8960_HAT=true: the WM8960
+# simple-card ("snd-wm8960") becomes the primary speaker/headphone/mic, DP stays the HDMI
+# path. The HAT's DT + kernel codec live in the K3 kernel (k3-bananapi-sm10.dts).
+SPACEMIT_WM8960_HAT ?= false
+ifeq ($(SPACEMIT_WM8960_HAT),true)
+PRODUCT_VENDOR_PROPERTIES += \
+    persist.vendor.audio.primary.card_name=wm8960 \
+    persist.vendor.audio.primary.device=0 \
+    persist.vendor.audio.hdmi.card_name=DP1
+# sh_vendor provides /vendor/bin/sh for the one-shot WM8960 routing setup.
+PRODUCT_PACKAGES += sh_vendor
+PRODUCT_COPY_FILES += \
+    device/spacemit/k3/audio/mixer_controls.xml:$(TARGET_COPY_OUT_VENDOR)/etc/mixer_controls.xml \
+    device/spacemit/k3/audio/wm8960_setup.sh:$(TARGET_COPY_OUT_VENDOR)/etc/wm8960_setup.sh \
+    device/spacemit/k3/audio/init.wm8960.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.wm8960.rc
+else
 PRODUCT_VENDOR_PROPERTIES += \
     persist.vendor.audio.primary.card_name=DP1 \
     persist.vendor.audio.primary.device=0 \
     persist.vendor.audio.hdmi.card_name=DP1
 PRODUCT_COPY_FILES += \
     hardware/baylibre/audio/mixer_controls.xml:$(TARGET_COPY_OUT_VENDOR)/etc/mixer_controls.xml
+endif
 
 # Fstab (UFS)
 PRODUCT_PACKAGES += \
